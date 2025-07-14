@@ -2,3 +2,5 @@
 .env
 /OLD
 *.csv
+/hyperliquid
+/NEW
