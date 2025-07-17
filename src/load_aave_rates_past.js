@@ -1,6 +1,7 @@
 const { Client } = require("pg");
 const fetch = require("node-fetch");
 const { parse } = require("csv-parse/sync");
+const ExcelJS = require("exceljs");
 require("dotenv").config();
 
 // PostgreSQL client
@@ -11,6 +12,9 @@ const client = new Client({
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT),
 });
+
+// This script automatically reads and stores historical data of the past 90 days
+// For more historical data a paid plan is needed
 
 // Map of [filenameKey]: [chain, asset, CSV_URL]
 const FILES = {
@@ -67,6 +71,8 @@ const parseFloatComma = (val) =>
 
 // Main function
 async function insertRatesFromAaveScan() {
+  const workbook = new ExcelJS.Workbook(); // New Excel workbook
+
   await client.connect();
 
   await client.query(`
@@ -90,8 +96,17 @@ async function insertRatesFromAaveScan() {
       const records = parse(text, {
         columns: true,
         skip_empty_lines: true,
-        relax_column_count: true, // <-- add this line
+        relax_column_count: true,
       });
+
+      const sheet = workbook.addWorksheet(`${chain}-${asset}`);
+      sheet.columns = [
+        { header: "Date", key: "date", width: 15 },
+        { header: "Chain", key: "chain", width: 10 },
+        { header: "Asset", key: "asset", width: 10 },
+        { header: "Rate Type", key: "rate_type", width: 10 },
+        { header: "Rate", key: "rate", width: 10 },
+      ];
 
       for (const row of records) {
         if (
@@ -111,6 +126,7 @@ async function insertRatesFromAaveScan() {
           ["supply", supply],
           ["borrow", borrow],
         ]) {
+          // Insert into PostgreSQL
           try {
             await client.query(
               `
@@ -122,10 +138,19 @@ async function insertRatesFromAaveScan() {
             );
           } catch (err) {
             console.error(
-              `❌ Error inserting ${date} ${chain} ${asset} ${rate_type}:`,
+              `❌ DB insert error: ${date} ${chain} ${asset} ${rate_type}:`,
               err.message
             );
           }
+
+          // Add to Excel sheet
+          sheet.addRow({
+            date,
+            chain,
+            asset,
+            rate_type,
+            rate,
+          });
         }
       }
 
@@ -136,6 +161,8 @@ async function insertRatesFromAaveScan() {
   }
 
   await client.end();
+  await workbook.xlsx.writeFile("aave_rates.xlsx");
+  console.log("📁 Excel file saved: aave_rates.xlsx");
   console.log("🚀 All done!");
 }
 
