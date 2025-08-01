@@ -63,7 +63,7 @@ const FILES = {
     "cbBTC",
     "https://aavescan.com/base-v3/cbbtc/daily-snapshots-aave-v3-base.csv",
   ],
-};
+}; 
 
 // Helper: Convert "3,56" to 3.56
 const parseFloatComma = (val) =>

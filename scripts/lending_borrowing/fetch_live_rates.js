@@ -27,7 +27,7 @@ const RPC = {
   [ChainId.base]: new ethers.providers.JsonRpcProvider(
     `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`
   ),
-};
+}; 
 
 // Aave markets we want to query
 const CHAINS = [

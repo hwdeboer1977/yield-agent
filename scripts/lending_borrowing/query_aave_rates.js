@@ -8,7 +8,7 @@ const client = new Client({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT),
-});
+}); 
 
 // Run query to test database
 async function runQuery() {
