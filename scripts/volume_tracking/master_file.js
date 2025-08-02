@@ -1,6 +1,6 @@
 // Master file that runs modular code blocks in correct order
-const fetchSwaps = require("./src/swapEvents_per_tick");
-const fetchLiquidity = require("./src/liquidity_per_tick");
+const fetchSwaps = require("./swapEvents_per_tick");
+const fetchLiquidity = require("./liquidity_per_tick");
 
 async function runAll() {
   console.log("🌀 Running yield-agent scripts...");

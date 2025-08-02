@@ -7,3 +7,7 @@
 /OLD
 *.txt
 *.xlsx
+data/
+scripts/test/
+swap_data.json
+swap_volume_per_tick.json
