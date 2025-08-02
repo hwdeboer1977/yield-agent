@@ -13,34 +13,45 @@ describe("IntentStorage", function () {
   });
 
   it("should create an intent", async function () {
-    await contract.connect(user1).createIntent("ETH", "LONG", 100, 3000);
+    const platform = 0; // Hyperliquid
+    const coin = ethers.encodeBytes32String("ETH");
+    const side = 0; // Long
+    const size = 100;
+    const minPrice = 3000;
+
+    await contract
+      .connect(user1)
+      .createIntent(platform, coin, side, size, minPrice);
 
     const intent = await contract.getIntent(user1.address);
-    expect(intent.coin).to.equal("ETH");
-    expect(intent.side).to.equal("LONG");
-    expect(intent.size).to.equal(100);
-    expect(intent.minPrice).to.equal(3000);
+    expect(ethers.decodeBytes32String(intent.coin)).to.equal("ETH");
+    expect(intent.side).to.equal(side);
+    expect(intent.size).to.equal(size);
+    expect(intent.minPrice).to.equal(minPrice);
     expect(intent.timestamp).to.be.gt(0);
   });
 
   it("should update an existing intent", async function () {
-    await contract.connect(user1).createIntent("ETH", "LONG", 100, 3000);
-    await contract.connect(user1).createIntent("ETH", "SHORT", 200, 2500);
+    const coin = ethers.encodeBytes32String("ETH");
+
+    await contract.connect(user1).createIntent(0, coin, 0, 100, 3000);
+    await contract.connect(user1).updateIntent(0, coin, 1, 200, 2500);
 
     const intent = await contract.getIntent(user1.address);
-    expect(intent.side).to.equal("SHORT");
+    expect(intent.side).to.equal(1); // Short
     expect(intent.size).to.equal(200);
     expect(intent.minPrice).to.equal(2500);
   });
 
   it("should clear an intent", async function () {
-    await contract.connect(user1).createIntent("ETH", "LONG", 100, 3000);
+    const coin = ethers.encodeBytes32String("ETH");
+
+    await contract.connect(user1).createIntent(0, coin, 0, 100, 3000);
     await contract.connect(user1).clearIntent();
 
     const intent = await contract.getIntent(user1.address);
-    expect(intent.coin).to.equal("");
-    expect(intent.side).to.equal("");
+    expect(intent.status).to.equal(0); // Inactive if enum Status { Inactive = 0, ... }
+    expect(intent.timestamp).to.equal(0);
     expect(intent.size).to.equal(0);
-    expect(intent.minPrice).to.equal(0);
   });
 });
