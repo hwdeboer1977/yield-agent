@@ -1,6 +1,7 @@
 /node_modules
 .env
 /OLD
+/OUD
 *.csv
 /hyperliquid
 /NEW
