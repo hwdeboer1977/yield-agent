@@ -4,7 +4,6 @@ const { TickMath } = require("@uniswap/v3-sdk");
 const fs = require("fs");
 
 const Q96 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(96));
-const TICK_FILE = "data/liquidity_2025-08-02.json";
 const CURRENT_TICK = 10;
 
 function getAmount0ForLiquidity(sqrtRatioAX96, sqrtRatioBX96, liquidity) {
@@ -29,7 +28,8 @@ function getAmount1ForLiquidity(sqrtRatioAX96, sqrtRatioBX96, liquidity) {
   );
 }
 
-async function fetchActiveLiquidity() {
+async function fetchActiveLiquidity(dateStr) {
+  const TICK_FILE = `data/liquidity_${dateStr}.json`;
   const ticks = JSON.parse(fs.readFileSync(TICK_FILE, "utf8"));
   const sorted = ticks
     .map((t) => ({ ...t, tick: parseInt(t.tick) }))

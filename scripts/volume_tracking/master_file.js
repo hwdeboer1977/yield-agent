@@ -6,22 +6,25 @@ const fetchSwaps = require("./4_swapEvents_per_tick");
 const mergeData = require("./5_merge_swaps_and_liquidity"); // optional final merge step
 
 async function runAll() {
+
+  const dateStr = new Date().toISOString().slice(0, 10); // e.g., '2025-08-03'
+
   console.log("🚀 Running yield-agent scripts...");
 
-  console.log("\n📊 Step 1: Aggregating pool info...");
-  await fetchAggInfo();
+  // console.log("\n📊 Step 1: Aggregating pool info...");
+  // await fetchAggInfo();
 
   // console.log("\n💧 Step 2: Fetching liquidity per tick...");
-  // await fetchLiquidity();
+  // await fetchLiquidity(dateStr);
 
   // console.log("\n🔥 Step 3: Fetching active liquidity (current tick)...");
-  // await fetchActiveLiquidity();
+  // await fetchActiveLiquidity(dateStr);
 
   // console.log("\n🔁 Step 4: Fetching swap events (last 24h)...");
-  // await fetchSwaps();
+  // await fetchSwaps(dateStr);
 
-  // console.log("\n🧠 Step 5: Merging swap and liquidity data...");
-  // await mergeData();
+  console.log("\n🧠 Step 5: Merging swap and liquidity data...");
+  await mergeData(dateStr);
 
   console.log("\n✅ All steps completed.");
 }

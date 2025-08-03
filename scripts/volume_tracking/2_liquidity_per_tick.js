@@ -30,7 +30,7 @@ function chunkArray(arr, size) {
   return chunks;
 }
 
-async function runLiquidityDump(dateStr) {
+async function fetchLiquidity(dateStr) {
   await multicallProvider.init();
   const poolMulticall = new Contract(USDC_USDT_POOL, IUniswapV3PoolABI);
 
@@ -112,5 +112,5 @@ async function runLiquidityDump(dateStr) {
   return tickData;
 }
 
-//runLiquidityDump();
-module.exports = { runLiquidityDump };
+//fetchLiquidity();
+module.exports = fetchLiquidity;

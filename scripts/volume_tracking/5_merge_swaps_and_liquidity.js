@@ -1,10 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-async function mergeLiquidityAndVolume({
-  liquidityFile = "tick_liquidity.csv",
-  volumeFile = "swap_volume_per_tick.json",
-  outputFile = "combined_tick_data.csv",
+async function mergeLiquidityAndVolume(dateStr, {
+  liquidityFile = `data/tick_liquidity_${dateStr}.csv`,
+  volumeFile = `data/swap_volume_per_tick_${dateStr}.json`,
+  outputFile = `data/combined_tick_data_${dateStr}.csv`,
 } = {}) {
   // === Load swap volume per tick (JSON) ===
   const volumeData = JSON.parse(fs.readFileSync(volumeFile, "utf-8"));

@@ -34,7 +34,7 @@ function calculate24hVolume(swaps) {
 }
 
 // ✅ Main function now assigned to a const
-const fetchSwaps = async () => {
+async function fetchSwaps(dateStr) {
   const pool = new ethers.Contract(USDC_USDT_POOL, IUniswapV3PoolABI, provider);
 
   const latestBlock = await provider.getBlockNumber();
@@ -56,14 +56,14 @@ const fetchSwaps = async () => {
     tick: evt.args.tick,
   }));
 
-  fs.writeFileSync("swap_data.json", JSON.stringify(swapData, null, 2));
+  fs.writeFileSync(`data/swap_data.json_${dateStr}`, JSON.stringify(swapData, null, 2));
   console.log("📁 Saved swap data to swap_data.json");
 
   const { totalVolumeUSD, volumePerTick } = calculate24hVolume(swapData);
   console.log(`💰 Total 24h Volume (USD): $${totalVolumeUSD}`);
 
   fs.writeFileSync(
-    "swap_volume_per_tick.json",
+    `data/swap_volume_per_tick_${dateStr}.json`,
     JSON.stringify(volumePerTick, null, 2)
   );
   console.log("📊 Saved tick-level volume data to swap_volume_per_tick.json");
