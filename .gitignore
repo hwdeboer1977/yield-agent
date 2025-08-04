@@ -12,3 +12,5 @@ data/
 scripts/test/
 swap_data.json
 swap_volume_per_tick.json
+/morpho-test
+/sdks

@@ -13,6 +13,9 @@
     "@aave/contract-helpers": "^1.36.1",
     "@bgd-labs/aave-address-book": "^4.25.3",
     "@ethers-ext/provider-multicall": "^6.0.0-beta.3",
+    "@morpho-org/blue-sdk": "^4.8.0",
+    "@morpho-org/blue-sdk-ethers": "^3.0.0",
+    "@morpho-org/blue-sdk-viem": "^3.1.1",
     "@uniswap/sdk-core": "^7.7.2",
     "@uniswap/v3-core": "^1.0.1",
     "@uniswap/v3-periphery": "^1.4.4",
@@ -27,10 +30,13 @@
     "exceljs": "^4.4.0",
     "fs": "^0.0.1-security",
     "graphql-request": "^7.2.0",
+    "install": "^0.13.0",
     "jsbi": "^4.3.2",
     "node-fetch": "^2.7.0",
+    "npm": "^11.5.2",
     "openai": "^5.9.0",
     "pg": "^8.16.3",
+    "viem": "^2.33.2",
     "xlsx": "^0.18.5"
   }
 }

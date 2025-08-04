@@ -7,14 +7,14 @@ This project collects and stores **Aave V3 lending/borrowing rates** across Ethe
 
 ## 📁 Scripts Overview
 
-### 1. `fetch_live_rates.js`
+### 1. `fetch_live_aave_rates.js`
 Fetches **live supply and borrow APRs** from the Aave V3 protocol using smart contract calls (no API needed beyond Alchemy RPC).
 
 - ✅ Chains: Ethereum, Arbitrum, Base  
 - ✅ Tokens: WETH, USDC, WBTC  
 - 📤 Output: `rates_output.txt` (plaintext log of rates)
 
-### 2. `load_aave_rates_past.js`
+### 2. `fetch_past_aave_rates.js`
 Downloads **historical APRs (past 90 days)** from AaveScan CSVs and stores them in a **PostgreSQL database** and an Excel file (`aave_rates.xlsx`).
 
 - ✅ Sources: [aavescan.com](https://aavescan.com)

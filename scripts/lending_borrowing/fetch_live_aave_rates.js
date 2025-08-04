@@ -4,7 +4,11 @@ const markets = require("@bgd-labs/aave-address-book");
 const ethers = require("ethers");
 require("dotenv").config();
 const fs = require("fs");
-const OUTPUT_FILE = "rates_output.txt";
+
+
+
+const dateStr = new Date().toISOString().slice(0, 10); // e.g., '2025-08-03'
+const OUTPUT_FILE = `data/rates_output_${dateStr}.txt`;
 
 // This script reads and stores the current supply and borrowing rate from AAVE
 // For 3 chains (Ethereum, Base, Arbitrum) and 3 tokens (WETH, USDC, WBTC)

@@ -161,8 +161,9 @@ async function insertRatesFromAaveScan() {
   }
 
   await client.end();
-  await workbook.xlsx.writeFile("aave_rates.xlsx");
-  console.log("📁 Excel file saved: aave_rates.xlsx");
+  const dateStr = new Date().toISOString().slice(0, 10); // e.g., '2025-08-03'
+  await workbook.xlsx.writeFile(`data/aave_rates_${dateStr}.xlsx`);
+  console.log("📁 Excel file saved: data.aave_rates.xlsx");
   console.log("🚀 All done!");
 }
 
