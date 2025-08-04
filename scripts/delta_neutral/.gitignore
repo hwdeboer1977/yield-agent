@@ -1,0 +1,10 @@
+*.env
+.env
+*.json
+/relayer/tmp/
+/solidity/artifacts/
+/solidity/cache/
+/solidity/ignition/
+/solidity/node_modules/
+relayer/src/__pycache__/
+relayer/src/config.json
