@@ -1,6 +1,6 @@
 # 🤖 Yield Agent – Rule-Based Yield Optimizer
 
-This project implements a **modular, rule-based yield agent** that performs DeFi strategy optimization across lending protocols (Aave), AMM pools (Uniswap V3), and delta-neutral positions. It is designed for **stepwise automation**, with a roadmap to evolve into a fully **autonomous AI agent**.
+This project implements a **modular, rule-based yield agent** that performs DeFi strategy optimization across lending protocols, AMM pools, and delta-neutral positions. It is designed for **stepwise automation**, with a roadmap to evolve into a fully **autonomous AI agent**.
 
 ---
 
@@ -26,7 +26,7 @@ yield-agent-main/
 
 **Folder:** `scripts/lending_borrowing/`
 
-Tracks lending and borrowing rates across DeFi protocols to identify capital-efficient opportunities for yield farming, collateralized strategies, or leveraged LP positions.
+Tracks lending and borrowing rates across DeFi protocols to identify capital-efficient opportunities for arbitraging, yield farming, collateralized strategies, or leveraged LP positions.
 
 Currently supports:
 - **Aave V3** on Ethereum, Arbitrum, and Base
@@ -120,7 +120,7 @@ Implements a modular **intent-based execution system** to hedge LP exposure or t
 
 
 **Planned extensions:**
-- 🌐 Cross-chain deployment (e.g. Base, Optimism, Solana via Wormhole)
+- 🌐 Cross-chain deployment (e.g. Base, Optimism, Solana)
 - 🔁 Support for more platforms:
   - **Drift** (Solana)
   - **Vertex** (Arbitrum)
