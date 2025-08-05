@@ -116,7 +116,8 @@ LIMIT 10;
 ## 🛠 Future Extensions
 
 - Scheduled runs with cron/Task Scheduler
-- Frontend dashboard with charts
+- Add protocols such as **Morpho** and **Compound** 
+- Script to monitor differences in rates across chains and/or protocols
 - Integration with other DeFi protocols
 
 ---
