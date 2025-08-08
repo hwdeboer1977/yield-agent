@@ -20,7 +20,7 @@ const {
 } = require("@uniswap/v3-periphery/artifacts/contracts/interfaces/ISwapRouter.sol/ISwapRouter.json");
 
 // Importing helper functions for retrieving pool immutables and state
-const { getPoolImmutables, getPoolState } = require("./helpers");
+const { getPoolImmutables } = require("./helpers");
 
 // Importing the ABI for ERC20 tokens
 const ERC20ABI = require("./abis/abi.json");
@@ -33,22 +33,10 @@ const JSBI = require("jsbi"); // Use 3.2.5 only!!
 const aggregatorV3InterfaceABI = require("./abis/pricefeedABI.json");
 
 // Importing Token and other utilities from the Uniswap SDK core module
-const { Token } = require("@uniswap/sdk-core");
+const { Token, Percent } = require("@uniswap/sdk-core");
 
 // Importing additional Uniswap V3 SDK components
-const { Pool, Position, nearestUsableTick } = require("@uniswap/v3-sdk");
-const { TickMath, FullMath, TickList } = require("@uniswap/v3-sdk");
-
-// Importing the ABI for the NonfungiblePositionManager contract
-const {
-  abi: INonfungiblePositionManagerABI,
-} = require("@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json");
-
-// Importing utilities for minting and managing positions on Uniswap V3
-const { MintOptions, NonfungiblePositionManager } = require("@uniswap/v3-sdk");
-
-// Importing the Percent utility from the Uniswap SDK core
-const { Percent, CurrencyAmount } = require("@uniswap/sdk-core");
+const { Pool, Position, nearestUsableTick, NonfungiblePositionManager } = require("@uniswap/v3-sdk");
 
 // Importing the Node.js file system module for file operations
 const fs = require("node:fs");
@@ -69,7 +57,6 @@ const positionManagerAddress = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"; // 
 // Oracle address for ETH/USDC price feed (Chainlink)
 const addr = "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612"; // Address of the price feed
 let priceOracleETHUSDC = 0; // Variable to store the fetched price
-let fee = 3000; // Uniswap pool fee (0.3%)
 
 // Token metadata for WETH
 const name0 = "Wrapped Ether";
@@ -145,12 +132,6 @@ const swapRouterContract = new ethers.Contract(
   provider
 );
 
-// Contract instance for the Nonfungible Position Manager
-const NonfungiblePositionContract = new ethers.Contract(
-  positionManagerAddress,
-  IUniswapV3PoolABI,
-  provider
-);
 
 // Fetch the base nonce for the wallet (number of transactions sent)
 let baseNonce = provider.getTransactionCount(WALLET_ADDRESS);
@@ -169,10 +150,6 @@ function getNonce() {
 async function approveContract(tokenContract) {
   // Fetch current fee data (EIP-1559 style fees)
   let feeData = await provider.getFeeData();
-
-  // Fetch the current gas price as a fallback
-  const gasPrice = await provider.getGasPrice();
-  //console.log(ethers.utils.formatUnits(gasPrice, "gwei")); // Optional logging to see the gas price in Gwei
 
   // Amount to approve: a very large number to ensure sufficient allowance
   let amountIn = 1e36; // Equivalent to 1 * 10^36
@@ -537,9 +514,6 @@ async function addLiquidity() {
   console.log("tickprice: " + tickPrice);
   console.log("sqrtPriceX96: " + sqrtPriceX96);
 
-  // Set a deadline for the liquidity addition transaction (30 minutes from now)
-  let deadline = Math.floor(Date.now() / 1000 + 1800);
-  console.log("currentPrice: " + currentPrice);
 
   // Inverse of the current price
   let currentPriceInv = 1 / currentPrice;
@@ -590,9 +564,6 @@ async function addLiquidity() {
   console.log("amount0Desired: " + amount0Desired);
   console.log("amount1Desired: " + amount1Desired);
 
-  // Set minimum amounts for the liquidity provision
-  let amount0Min = 0;
-  let amount1Min = 0;
 
   // Save the current price to a text file for tracking purposes
   const writePrice = `${currentPrice}`;
@@ -614,12 +585,6 @@ async function addLiquidity() {
     poolData.liquidity.toString(),   // JSBI
     poolData.tick                      // number
   );
-
-  // console.log(typeof(quoteToken))
-  // console.log(typeof(BaseToken))
-  // console.log(typeof(poolData.fee))
-  // console.log(typeof(poolData.liquidity.toString()))
-  // console.log(typeof(poolData.tick))
 
 
   // Calculate the amount of WETH to supply based on the wallet balance and the liquidity factor
