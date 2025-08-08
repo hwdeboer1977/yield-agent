@@ -1,0 +1,4 @@
+node_modules/
+.env
+LOG_*.txt
+PRICE_*.txt
