@@ -11,6 +11,9 @@ const { BigNumber } = require("ethers");
 const ERC20ABI = require("./abis/abi.json");
 const { getNonce } = require("./helpers"); // Optional helper for manual nonce handling
 
+// ID LP position
+const idLP = 4758139
+
 /********* CONFIG *********/
 // Environment & wallet settings
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY;
@@ -179,7 +182,7 @@ async function runReports() {
   const pools = [
     {
       label: "USDC/WETH",
-      positionId: 4758139,
+      positionId: idLP,
       poolAddress: "0xc6962004f452be9203591991d15f6b388e09e8d0",
       baseTokenSymbol: "WETH",
       quoteTokenSymbol: "USDC",
