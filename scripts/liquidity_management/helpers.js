@@ -22,3 +22,9 @@ exports.getPoolImmutables = async (poolContract) => {
   
     return state
   }
+
+  // Pending nonce helper with optional offset (for batching/concurrency)
+exports.getNonce = async (provider, walletAddress, offset = 0) => {
+  const base = await provider.getTransactionCount(walletAddress, "pending");
+  return base + Number(offset);
+};

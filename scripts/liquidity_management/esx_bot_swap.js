@@ -1,6 +1,6 @@
 const { ethers } = require("ethers");
 require("dotenv").config();
-const ERC20ABI = require("./abi.json");
+const ERC20ABI = require("./abis/abi.json");
 const {
   abi: IUniswapV3PoolABI,
 } = require("@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json");
@@ -8,8 +8,8 @@ const { getNonce } = require("./helpers");
 
 // --- Wallet Setup ---
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY;
-const WALLET_ADDRESS = process.env.MY_WALLET;
-const WALLET_SECRET = process.env.MY_PK_DEV_WALLET;
+const WALLET_ADDRESS = process.env.WALLET_ADDRESS2;
+const WALLET_SECRET = process.env.WALLET_SECRET2;
 
 // Connect to Base Mainnet RPC (chainId 8453):contentReference[oaicite:3]{index=3}
 const provider = new ethers.providers.JsonRpcProvider(
@@ -224,7 +224,8 @@ async function swapTokens() {
 
   // STEP 1: ERC-20 approve: wallet -> Permit2
   console.log("🔑 Approving token for Permit2...");
-  const nonce1 = await getNonce();
+  const nonce1 = await getNonce(provider, WALLET_ADDRESS);
+  console.log("Pending nonce:", nonce1);
   try {
     const tx = await tokenIn.approve(PERMIT2_ADDRESS, amountIn, {
       nonce: nonce1,
@@ -239,7 +240,7 @@ async function swapTokens() {
 
   // STEP 2: Permit2 → Router
   const permitExpiry = Math.floor(Date.now() / 1000) + 3600; // 1 hour validity
-  const nonce2 = await getNonce();
+  const nonce2 = await getNonce(provider, WALLET_ADDRESS);
   try {
     const tx2 = await permit2.approve(
       tokenInAddress,
@@ -303,7 +304,7 @@ async function swapTokens() {
   const bumpedTip = tip.mul(ethers.BigNumber.from(3)); // triple the tip
   const maxFee = base.mul(2).add(bumpedTip); // allow some buffer
 
-  const nonce3 = await getNonce();
+  const nonce3 = await getNonce(provider, WALLET_ADDRESS);
   try {
     const txSwap = await router.execute(commands, [swapInput], deadline, {
       maxPriorityFeePerGas: bumpedTip,

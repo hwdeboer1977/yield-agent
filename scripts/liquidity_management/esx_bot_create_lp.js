@@ -10,15 +10,15 @@ const { getNonce } = require("./helpers");
 const {
   abi: IUniswapV3PoolABI,
 } = require("@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json");
-const ERC20ABI = require("./abi.json");
+const ERC20ABI = require("./abis/abi.json");
 const { Token, Percent } = require("@uniswap/sdk-core");
 const { Pool, Position, nearestUsableTick } = require("@uniswap/v3-sdk");
 const { NonfungiblePositionManager } = require("@uniswap/v3-sdk");
 
 /********* CONFIG *********/
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY;
-const WALLET_ADDRESS = process.env.MY_WALLET;
-const WALLET_SECRET = process.env.MY_PK_DEV_WALLET;
+const WALLET_ADDRESS = process.env.WALLET_ADDRESS2;
+const WALLET_SECRET = process.env.WALLET_SECRET2;
 
 const provider = new ethers.providers.JsonRpcProvider(
   `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`
@@ -29,7 +29,7 @@ const connectedWallet = wallet.connect(provider);
 /********* CONSTANTS *********/
 const minPriceFactor = 0.9;
 const maxPriceFactor = 1.1;
-const factorInLP = 0.7;
+const factorInLP = 0.1;
 const setGasLimit = 1_000_000;
 const setGasHigher = 1;
 const fee = 3000;
@@ -372,13 +372,13 @@ async function createLP() {
 
   // Approve both tokens: only need to approve once
   // Use unique nonces for each tx
-  //const nonce1 = await getNonce(); // for base token approval
-  //await approveContract(contractBaseToken, nonce1);
+  const nonce1 = await getNonce(provider, WALLET_ADDRESS); // for base token approval
+  await approveContract(contractBaseToken, nonce1);
 
-  //const nonce2 = await getNonce(); // for quote token approval
-  //await approveContract(contractQuoteToken, nonce2);
+  const nonce2 = await getNonce(provider, WALLET_ADDRESS); // for quote token approval
+  await approveContract(contractQuoteToken, nonce2);
 
-  const nonce3 = await getNonce(); // for LP mint
+  const nonce3 = await getNonce(provider, WALLET_ADDRESS); // for LP mint
   // Mint LP position with next nonce
   await addLiquidity(nonce3);
 }
