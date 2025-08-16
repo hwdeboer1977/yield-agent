@@ -6,12 +6,12 @@ const {
   abi: IUniswapV3PoolABI,
 } = require("@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json");
 const JSBI = require("jsbi");
-const ERC20ABI = require("./abi.json");
+const ERC20ABI = require("./abis/abi.json");
 
 /********* CONFIG *********/
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY;
-const WALLET_ADDRESS = process.env.MY_WALLET;
-const WALLET_SECRET = process.env.MY_PK_DEV_WALLET;
+const WALLET_ADDRESS = process.env.WALLET_ADDRESS2;
+const WALLET_SECRET = process.env.WALLET_SECRET2;
 const poolAddress = "0xc787ff6f332ee11b2c24fd8c112ac155f95b14ab";
 
 const provider = new ethers.providers.JsonRpcProvider(
@@ -176,8 +176,7 @@ async function removeLiquidity(nonce) {
 
 /********* MAIN ENTRY *********/
 async function pullLP() {
-  const nonce = await getNonce(); // for LP mint
-
+  const nonce = await getNonce(provider, WALLET_ADDRESS);  // for LP pull
   await removeLiquidity(nonce);
 }
 

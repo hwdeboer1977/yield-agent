@@ -6,8 +6,8 @@ const fetch = require("node-fetch");
 const fs = require("node:fs");
 const JSBI = require("jsbi");
 const { BigNumber } = require("ethers");
-const ERC20ABI = require("./abi.json");
-const { getNonce } = require("./helpers"); // import it
+const ERC20ABI = require("./abis/abi.json");
+
 
 const baseTokenCA = "0x4200000000000000000000000000000000000006"; // WETH
 const quoteTokenCA = "0x6a72d3a87f97a0fee2c2ee4233bdaebc32813d7a"; // ESX
@@ -16,8 +16,8 @@ const poolAddress = "0xc787ff6f332ee11b2c24fd8c112ac155f95b14ab";
 
 /********* CONFIG *********/
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY;
-const WALLET_ADDRESS = process.env.MY_WALLET;
-const WALLET_SECRET = process.env.MY_PK_DEV_WALLET;
+const WALLET_ADDRESS = process.env.WALLET_ADDRESS2;
+const WALLET_SECRET = process.env.WALLET_SECRET2;
 
 const provider = new ethers.providers.JsonRpcProvider(
   `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`

@@ -17,17 +17,17 @@ async function main() {
       console.log("📉 Out of range. Rebalancing...");
 
       // Step 1: Pull LP
-      //await pullLP();
+      await pullLP();
       console.log("⏸ Waiting 10 seconds for chain to confirm...");
       //await delay(10000);
 
       // Step 2: Swap tokens
-      await swapTokens();
+      //await swapTokens();
       console.log("⏸ Waiting 10 seconds before next step...");
       await delay(10000);
 
       // Step 3: Create new LP
-      await createLP();
+      //await createLP();
 
       console.log("✅ New LP position created.");
     } else {
