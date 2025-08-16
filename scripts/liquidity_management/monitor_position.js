@@ -5,7 +5,7 @@ const fetch = require("node-fetch");
 const fs = require("node:fs");
 const JSBI = require("jsbi");
 const { BigNumber } = require("ethers");
-const ERC20ABI = require("./abi.json");
+const ERC20ABI = require("./abis/abi.json");
 const { getNonce } = require("./helpers"); // optional
 
 /********* CONFIG *********/
